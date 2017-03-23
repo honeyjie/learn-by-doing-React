@@ -1,12 +1,12 @@
 /*
 * @Author: xiongjie
 * @Date:   2017-03-22 01:39:49
- * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2017-03-22 19:25:03
+ * @Last Modified time: 2017-03-23 11:56:13
 */
 
 'use strict';
 import React from "react";
+import marked from "marked";
 
 export class Board extends React.Component {
     render() {
@@ -38,7 +38,9 @@ class List extends React.Component {
             return <Card id={card.id} 
                             title={card.title} 
                             description={card.description} 
-                            tasks={card.tasks} key={card.id}/>
+                            tasks={card.tasks} key={card.id}
+                            /* 元素内部注释不需要引号*/
+                            />
         });
         
         return (
@@ -56,6 +58,9 @@ class Card extends React.Component {
             showDetails: false
         }
     }
+    toggleDetails() {
+        this.setState({showDetails: !this.state.showDetails});//作为内部函数调用时要将正确的this传进去
+    }
     render() {
         let cardDetails;
         if (this.state.showDetails) {
@@ -68,11 +73,10 @@ class Card extends React.Component {
         }
         return (
             <div className="card">
-                <i className="fa fa-caret-right" aria-hidden="true"></i>
-                <div className="card_title" onClick={
-                    () => this.setState({showDetails: !this.state.showDetails})
-                }>
+                <i className= {this.state.showDetails ? "fa fa-caret-down": "fa fa-caret-right"}aria-hidden="true"></i>
+                <div className="card_title" onClick={this.toggleDetails.bind(this)}>
                     {this.props.title}
+                    {/* 添加注释*/}
                 </div>
                 {cardDetails}
             </div>
