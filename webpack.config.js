@@ -6,7 +6,7 @@ var webpack = require('webpack');
  */
 var config = {
   devtool: 'eval-source-map',
-  entry:  __dirname + "/app/three.js",
+  entry:  __dirname + "/app/BoardContainer.js",
   output: {
     path: __dirname + "/public",
     publicPath: '/open/',

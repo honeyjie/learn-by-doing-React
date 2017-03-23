@@ -5,11 +5,14 @@
 */
 
 'use strict';
+// import React from "react";
+// import { render } from "react-dom";
 import React from "react";
 import { render } from "react-dom";
 
 //入口文件，只渲染一个顶级组件和所需要的数据
-import {Board} from "./board.js"
+
+import { BoardContainer } from "./BoardContainer.js"
 import './main.scss'
 
 let cardsList = [
@@ -17,13 +20,15 @@ let cardsList = [
         id: 1,
         title: "Read the Book",
         description: "I should read at least 50 pages",
+        color: "#66CCCC",
         status: "in-progress",
-        tasks: []
+        tasks: [],
     },
     {
         id: 2,
         title: "Write one article",
-        description: "I should writedown what I learned today",
+        description: "Code along with the samples in the book. The complete source can be found at [github](https://github.com/pro-react)",
+        color: "#99CC33",
         status: "todo",
         tasks: [
             {
@@ -42,6 +47,7 @@ let cardsList = [
         id: 3,
         title: "Coding width React",
         description: "learn React beacuse mylove",
+        color: "#663399",
         status: "done",
         tasks: [
             {
@@ -58,4 +64,5 @@ let cardsList = [
     },
 ]
 
-render(<Board cards={cardsList} />, document.getElementById('root'))
+var data = JSON.stringify(cardsList)
+render(<BoardContainer />, document.getElementById('root'))
