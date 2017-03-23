@@ -1,14 +1,13 @@
-Grocery List
-============
+# learn-by-doing-React
 
-**Install**
-```
+> 采用webpack 搭建的React,参考书籍 原版书籍中的项目 Rro React http://www.pro-react.com/, 配合Wepack教程和其他补充了解的，项目持续更新中
+
+
+- 安装依赖
 npm install
-```
 
-**Start the application in development mode**
-```
+- 开启服务器
 npm start
-```
 
-Open http://localhost:8080 in your browser.
+- 浏览器打开
+ http://localhost:8081
