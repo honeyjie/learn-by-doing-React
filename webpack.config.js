@@ -4,9 +4,10 @@ var webpack = require('webpack');
 /*
  * Default webpack configuration for development
  */
+// "/app/BoardContainer.js"
 var config = {
   devtool: 'eval-source-map',
-  entry:  __dirname + "/app/BoardContainer.js",
+  entry:  __dirname + "/app/router.js",
   output: {
     path: __dirname + "/public",
     publicPath: '/open/',
@@ -24,6 +25,9 @@ var config = {
     {
       test: /\.(scss|css)$/, loader: 'style-loader!css-loader!sass-loader',
     }]
+  },
+  devServer: {
+    historyApiFallback: true,
   }
 
   // devServer: {

@@ -4,6 +4,7 @@ import { Board } from "./board.js";
 import "whatwg-fetch";
 import "babel-polyfill";
 import './main.scss'
+import './styles/font-awesome/css/font-awesome.css'
 import update from 'react-addons-update'
 // If you're running the server locally, the URL will be, by default, localhost:3000 // Also, the local server doesn't need an authorization header.
 // const API_URL = 'localhost://8081';

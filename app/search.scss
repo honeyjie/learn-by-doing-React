@@ -1,0 +1,16 @@
+a {
+    font-family: Helvetica, Arial, sans-serif;
+    text-decoration: none;
+    color: #fff;
+}
+.button {
+    padding: 0.75rem 1rem;
+    border-radius: 0.3rem;
+    box-shadow: 0;
+    background-color: #bbb;
+    &:hover {
+        background-color: #e2e;
+        box-shadow: 0 4px #900;
+        transition: 0.5s;
+    }
+}
