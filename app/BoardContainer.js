@@ -1,16 +1,14 @@
 import React from "react";
 import { render } from "react-dom";
-import { Board } from "./board.js";
+import { Board, NewCard, EditCard} from "./board.js";
 import "whatwg-fetch";
-import "babel-polyfill";
 import './main.scss'
-import './styles/font-awesome/css/font-awesome.css'
 import update from 'react-addons-update'
-// If you're running the server locally, the URL will be, by default, localhost:3000 // Also, the local server doesn't need an authorization header.
-// const API_URL = 'localhost://8081';
-// const API_HEADERS = {
-//   'Content-Type': 'application/json',
-// Authorization: 'any-string-you-like'// The Authorization is not needed for local server };
+import { Router, Route, Link, IndexRoute, browserHistory} from 'react-router';
+import { Provider } from "react-redux";
+import 'babel-polyfill';//使旧浏览器支持如find()类的方法
+
+import "whatwg-fetch";
 
 export class BoardContainer extends React.Component {
     constructor() {
@@ -51,6 +49,7 @@ export class BoardContainer extends React.Component {
         this.setState({cards: nextState})
     }
     toggleTask(cardId, taskId, taskIndex) {
+        console.log(cardId, taskId, taskIndex)
         //更新task.done
         let cardIndex = this.state.cards.findIndex((card) => card.id == cardId);
         let newDoneValue;
@@ -71,6 +70,29 @@ export class BoardContainer extends React.Component {
         })
         this.setState({cards: nextState})
     }
+
+    addCard(card) {
+        let prevState = this.state;
+        if (card.id === null) {
+            let card = Object.assign({}, card, {id: Date.now()});
+        }
+
+        let nextState = update(this.state.cards, {$push: [card]});
+        this.setState({cards: nextState})
+    }
+
+    updateCard(card) {
+        let prevState = this.state;
+        let cardIndex = this.state.cards.findIndex((c) => c.id == card.id);
+
+        let nextState = update(
+            this.state.cards, {
+                [cardIndex]: {$set: card}
+            }
+        )
+
+        this.setState({cards: nextState});
+    }
     componentDidMount() {
         fetch('./cards.json')
         .then(function(res) {
@@ -86,11 +108,33 @@ export class BoardContainer extends React.Component {
         })
     }
     render() {
-        return <Board cards={this.state.cards} taskCallbacks={
-            {toggle: this.toggleTask.bind(this),
-             delete: this.deleteTask.bind(this),
-                add: this.addTask.bind(this)}
-        }/>
+        let kanbanBoard = this.props.children && React.cloneElement(this.props.children, {
+            cards: this.state.cards,
+            taskCallbacks: {
+                toggle: this.toggleTask.bind(this),
+                delete: this.deleteTask.bind(this),
+                   add: this.addTask.bind(this)
+            },
+            cardCallbacks: {
+                addCard: this.addCard.bind(this),
+                updateCard: this.updateCard.bind(this),
+                // updateStatus: this.updateCardStatus.bind(this),
+                // updatePosition: throttle(this.updateCardPosition.bind(this), 500),
+                // persistMove: this.persistCardMove.bind(this)
+            }
+        })
+        return kanbanBoard;
     }
 }
-render(<BoardContainer />, document.getElementById('root'))
+
+render((
+<Router history={browserHistory}>
+    <Route component={BoardContainer} > 
+        <Route path="/" component={Board}>
+            <Route path="new" component={NewCard} />
+            <Route path="edit/:card_id" component={EditCard} /> 
+        </Route>
+    </Route> 
+</Router>
+), document.getElementById('root'));
+// render(<BoardContainer />, document.getElementById('root'))

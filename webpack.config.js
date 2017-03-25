@@ -7,7 +7,7 @@ var webpack = require('webpack');
 // "/app/BoardContainer.js"
 var config = {
   devtool: 'eval-source-map',
-  entry:  __dirname + "/app/router.js",
+  entry:  __dirname + "/app/BoardContainer.js",
   output: {
     path: __dirname + "/public",
     publicPath: '/open/',
@@ -23,7 +23,10 @@ var config = {
       }
     },
     {
-      test: /\.(scss|css)$/, loader: 'style-loader!css-loader!sass-loader',
+      test: /\.scss$/, loader: 'style-loader!css-loader!sass-loader',
+    },
+    {
+      test: /\.css$/, loader: 'style-loader!css-loader',
     }]
   },
   devServer: {

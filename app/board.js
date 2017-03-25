@@ -11,6 +11,10 @@ import "babel-polyfill";
 
 export class Board extends React.Component {
     render() {
+        let cardModal = this.props.children && React.cloneElement(this.props.children, {
+            cards: this.props.cards,
+            cardCallbacks: this.props.cardCallbacks
+        })
         return (
             <div className= "app">
                 <List id="todo" title="To Do" cards={
@@ -28,6 +32,7 @@ export class Board extends React.Component {
                         (card) => card.status === "done" 
                     )
                 } taskCallbacks={this.props.taskCallbacks} />
+                {cardModal}
             </div>
         )
     }
@@ -142,3 +147,137 @@ CheckList.propTypes = {
     taskCallbacks: React.PropTypes.object, 
     tasks: React.PropTypes.array
 };
+
+export class CardForm extends React.Component {
+    handleChange(filed, e) {
+        this.props.handleChange(filed, e.target.value)
+    }
+    handleClose(e) {
+        e.preventDefault();
+        this.props.handleClose()
+    }
+    render() {
+        return (
+            <div>
+                <div className="card big">
+                    <form onSubmit={this.props.handleSubmit.bind(this)}> 
+                        <input type='text'
+                        onChange={this.handleChange.bind(this,'title')}
+                        placeholder="Title"
+                        required={true}
+                        autoFocus={true} />
+                        <br />
+                        <textarea 
+                            onChange={this.handleChange.bind(this,'description')}
+                            placeholder="Description"
+                            required={true} />
+                        <br/>
+                        <label htmlFor="status">Status</label> 
+                        <select id="status"
+                            value={this.props.draftCard.status}
+                            onChange={this.handleChange.bind(this,'status')}>
+                            <option value="todo">To Do</option>
+                            <option value="in-progress">In Progress</option>
+                            <option value="done">Done</option>
+                        </select>
+                        <br />
+                        <label htmlFor="color">Color</label>
+                            <input id="color"
+                                /*value={this.props.draftCard.color}*/
+                                onChange={this.handleChange.bind(this,'color')}
+                                type="color"
+                                defaultValue="#ff0000" />
+                        <div className='actions'>
+                            <button type="submit">{this.props.buttonLabel}</button>
+                        </div> 
+                    </form>
+                </div>
+                    <div className="overlay" onClick={this.handleClose.bind(this)}></div>
+            </div>
+        )
+    }
+}
+CardForm.propTypes = {
+  buttonLabel: React.PropTypes.string.isRequired,
+  draftCard: React.PropTypes.shape({
+    title: React.PropTypes.string,
+    description: React.PropTypes.string,
+    status: React.PropTypes.string,
+    color: React.PropTypes.string
+  }).isRequired,
+  handleChange: React.PropTypes.func.isRequired,
+  handleSubmit: React.PropTypes.func.isRequired,
+  handleClose: React.PropTypes.func.isRequired,
+}
+export class NewCard extends React.Component {
+    componentWillMount() {
+        this.setState({
+            id: Date.now(),
+            title: '',
+            description: '',
+            status: 'todo',
+            color: '#c9c9c9',
+            tasks: []
+        })
+    }
+    handleChange(filed, value) {
+        this.setState({[filed]: value})
+    }
+    handleSubmit(e) {
+        e.preventDefault();
+        this.props.cardCallbacks.addCard(this.state);
+        this.context.router.push('/');
+    }
+    handleClose(e) {
+        this.context.router.push('/');
+    }
+    render() {
+        return (
+            <CardForm draftCard={this.state}
+                buttonLabel="Create Card"
+                handleChange={this.handleChange.bind(this)}
+                handleSubmit={this.handleSubmit.bind(this)}
+                handleClose={this.handleClose.bind(this)} />
+        )
+    }
+}
+NewCard.PropTypes = {
+    cardCallbacks: React.PropTypes.object
+}
+NewCard.contextTypes = {
+    router: React.PropTypes.object.isRequired
+}
+export class EditCard extends React.Component{
+componentWillMount(){
+    let card = this.props.cards.find(
+        (card)=>{
+            console.log(card)
+           return card.id == this.props.params.card_id
+        })
+    // this.setState({...card});
+}
+handleChange(field, value){ 
+    this.setState({[field]: value});
+}
+handleSubmit(e){
+    e.preventDefault(); 
+    this.props.cardCallbacks.updateCard(this.state); 
+    this.context.router.push('/');
+}
+handleClose(e){ 
+    this.context.router.push('/');
+}
+render(){ 
+    return (
+        <CardForm draftCard={this.state} buttonLabel="Edit Card"
+        handleChange={this.handleChange.bind(this)}
+        handleSubmit={this.handleSubmit.bind(this)}
+        handleClose={this.handleClose.bind(this)} />
+    ) }
+}
+EditCard.contextTypes = {
+    router: React.PropTypes.object.isRequired
+}
+EditCard.propTypes = {
+  cardCallbacks: React.PropTypes.object,
+}
