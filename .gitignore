@@ -6,5 +6,5 @@ app/second.js
 app/actions/
 app/components/
 app/containers/
-app/reducers/
+app/reducers/s
 .DS_Store
