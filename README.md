@@ -9,7 +9,7 @@
 
 
 目前是这样的：
-!["learn-react"](./app/img/demo.png)
+!["learn-react"](/public/img/demo.png)
 
 - 安装依赖
 npm install
