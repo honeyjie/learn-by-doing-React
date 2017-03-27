@@ -1,10 +1,7 @@
 var webpack = require('webpack');
 // var ExtractTextPlugin = require('extract-text-webpack-plugin');
 // var autoprefixer = require('autoprefixer')
-/*
- * Default webpack configuration for development
- */
-// "/app/BoardContainer.js"
+
 var config = {
   devtool: 'eval-source-map',
   entry:  __dirname + "/app/BoardContainer.js",

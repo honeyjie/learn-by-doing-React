@@ -1,13 +1,16 @@
 /*
 * @Author: xiongjie
 * @Date:   2017-03-22 01:39:49
- * @Last Modified time: 2017-03-23 11:56:13
+* @Last Modified time: 2017-03-23 11:56:13
 */
 
 'use strict';
 import React from "react";
 import marked from "marked";
 import "babel-polyfill";
+import { Link } from 'react-router';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'; 
+// import marked from 'marked';
 
 export class Board extends React.Component {
     render() {
@@ -15,8 +18,10 @@ export class Board extends React.Component {
             cards: this.props.cards,
             cardCallbacks: this.props.cardCallbacks
         })
+
         return (
             <div className= "app">
+                <Link to="/new" className="float-button">+</Link>
                 <List id="todo" title="To Do" cards={
                     this.props.cards.filter(
                         (card) => card.status === "todo" 
@@ -99,7 +104,15 @@ class Card extends React.Component {
                     {this.props.title}
                     {/* 添加注释*/}
                 </div>
-                {cardDetails}
+                <div className="card_edit">
+                    <Link to={'/edit/'+ this.props.id}>&#9998;</Link>
+                </div>
+                <ReactCSSTransitionGroup 
+                    transitionName="toggle" 
+                    transitionEnterTimeout={250}
+                    transitionLeaveTimeout={250} >
+                        {cardDetails}
+                </ReactCSSTransitionGroup>
             </div>
         )
     }
@@ -116,9 +129,7 @@ Card.propTypes = {
 
 class CheckList extends React.Component {
     checkInputKeyPress(e) {
-        console.log("1", e.key)
         if (e.key.toLowerCase() === "enter") {//注意大小写
-            console.log("1")
             this.props.taskCallbacks.add(this.props.cardId, e.target.value);
             e.target.value = '';
         }
@@ -186,7 +197,7 @@ export class CardForm extends React.Component {
                                 /*value={this.props.draftCard.color}*/
                                 onChange={this.handleChange.bind(this,'color')}
                                 type="color"
-                                defaultValue="#ff0000" />
+                                defaultValue="#c9c9c9" />
                         <div className='actions'>
                             <button type="submit">{this.props.buttonLabel}</button>
                         </div> 
@@ -249,12 +260,26 @@ NewCard.contextTypes = {
 }
 export class EditCard extends React.Component{
 componentWillMount(){
+    console.log(this.props.cards, this.props.params);
+    // let card = this.props.cards.find(
+    //     function(card) {
+
+    // })
     let card = this.props.cards.find(
-        (card)=>{
-            console.log(card)
+        function(card) {
            return card.id == this.props.params.card_id
         })
+    console.log(card);
     // this.setState({...card});
+     this.setState({
+            id: Date.now(),
+            title: '',
+            description: '',
+            status: 'todo',
+            color: '#c9c9c9',
+            tasks: []
+        })
+    // console.log(this.state.cards)
 }
 handleChange(field, value){ 
     this.setState({[field]: value});

@@ -5,17 +5,10 @@ import "whatwg-fetch";
 import './main.scss'
 import update from 'react-addons-update'
 import { Router, Route, Link, IndexRoute, browserHistory} from 'react-router';
-import { Provider, createStore} from "react-redux";
+import { Provider } from "react-redux";
 import 'babel-polyfill';//使旧浏览器支持如find()类的方法
 
 import "whatwg-fetch";
-
-// import { createStore } from 'redux' 
-/*All container components need access to the Redux store so they can subscribe to it
-使Redux存储区可用于下面组件层次结构中的connect（）调用*/
-// import reducer from './reducers'
-
-// const store = createStore(reducer)
 
 export class BoardContainer extends React.Component {
     constructor() {
@@ -135,13 +128,15 @@ export class BoardContainer extends React.Component {
 }
 
 render(
-<Router history={browserHistory}>
-    <Route component={BoardContainer} > 
-        <Route path="/" component={Board}>
-            <Route path="new" component={NewCard} />
-            <Route path="edit/:card_id" component={EditCard} /> 
-        </Route>
-    </Route> 
-</Router>
+    <Provider store={store}>
+        <Router history={browserHistory}>
+            <Route component={BoardContainer} > 
+                <Route path="/" component={Board}>
+                    <Route path="new" component={NewCard} />
+                    <Route path="edit/:card_id" component={EditCard} /> 
+                </Route>
+            </Route> 
+        </Router>
+    </Provider>
 , document.getElementById('root'));
 // render(<BoardContainer />, document.getElementById('root'))

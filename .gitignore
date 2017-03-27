@@ -3,4 +3,8 @@ app/styles/
 app/App.js
 app/first.js
 app/second.js
+app/actions/
+app/components/
+app/containers/
+app/reducers/
 .DS_Store
