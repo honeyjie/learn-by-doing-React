@@ -19,7 +19,8 @@
     "node-sass": "^4.5.1",
     "redux-devtools": "^3.3.2",
     "sass-loader": "^6.0.3",
-    "style-loader": "^0.15.0"
+    "style-loader": "^0.15.0",
+    "redux": "^3.5.2"
   },
   "dependencies": {
     "babel-polyfill": "^6.23.0",

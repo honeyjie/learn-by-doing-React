@@ -1,9 +1,167 @@
-import todos from "./card.js"
-import { combineReducers } from 'redux';
-const ReducerIndex = combineReducers({
-  card: todos
-})
-export default ReducerIndex
+import { addTask, deleteTask, toggleTask, showDetail} from '../actions'
+import update from 'react-addons-update'
+// import { combineReducers } from "react-redux";
+// let nextTaskId = 0
+// export const addTask = (text) => ({
+//   type: 'ADD_TASK',
+//   id: nextTaskId++,
+//   text
+// })
+// export const deleteTask = (id, taskId, taskIndex) => ({
+//   type: 'DELETE_TASK',
+//   id,
+//   taskId,
+//   taskIndex
+// })
+// export const toggleTask = (id, taskId, taskIndex) => ({
+//   type: 'TOGGLE_TASK',
+//   id,
+//   taskId,
+//   taskIndex
+// })
+// const todo = (state, action) => {
+//   switch (action.type) {
+//     case 'ADD_TASK':
+//       return {
+//         id: action.id,
+//         text: action.text
+//       }
+//     case 'TOGGLE_TASK':
+//       if (state.id !== action.id) {
+//         return state
+//       }
+
+//       return {
+//         // ...state,
+//         completed: !state.completed
+//       }
+//     default:
+//       return state
+//   }
+// }
+
+const initailState = [
+    {
+        "id":1,
+        "title":"Read the Book",
+        "description":"I should read at least 50 pages",
+        "color":"#66CCCC",
+        "status":"in-progress",
+        "showDetail": false,
+        "tasks":[]
+    },{
+        "id":2,
+        "title":"Write one article",
+        "description":"Code along with the samples in the book. The complete source can be found at [github](https://github.com/pro-react)",
+        "color":"#99CC33",
+        "status":"todo",
+        "showDetail": false,
+        "tasks":[
+            {
+                "id":11,
+                "name":"aaa",
+                "done":true
+            },{
+                "id":21,
+                "name":"bbb",
+                "done":false
+                }
+            ]
+    },{
+        "id":3,
+        "title":"Coding width React",
+        "description":"learn React beacuse mylove",
+        "color":"#663399",
+        "status":"done",
+        "showDetail": false,
+        "tasks":[
+            {
+                "id":31,
+                "name":"aaa",
+                "done":true
+            },{
+                "id":41,
+                "name":"bbb",
+                "done":false
+                }
+            ]
+    },{
+        "id":4,
+        "title":"Coding width React",
+        "description":"learn React beacuse mylove",
+        "color":"#663399",
+        "status":"done",
+        "showDetail": false,
+        "tasks":[
+            {
+                "id":31,
+                "name":"aaa",
+                "done":true
+            },{
+                "id":41,
+                "name":"bbb",
+                "done":false
+                }
+            ]
+    }
+]
+// console.log(cardId, taskId, taskIndex)
+// //更新task.done
+// let cardIndex = this.state.cards.findIndex((card) => card.id == cardId);
+// let newDoneValue;
+// let nextState = update(this.state.cards, {
+//     [cardIndex]: {
+//         tasks: {
+//             [taskIndex]: {
+//                 done: {
+//                     $apply: (done) => {
+//                         newDoneValue = !done
+//                         return newDoneValue;
+//                     }//传递参数的写法,将现有值传进去后得到一个新值
+//                     // $set: !this.state.cards[cardIndex].tasks.done
+//                 }
+//             }
+//         }
+//     }
+// })
+function showDetail(state, action) {
+    let cardIndex = state.findIndex((card) => card.id === action.id);
+    let newDoneValue;
+    let nextState = update(state, {
+        [cardIndex]: {
+            tasks: {
+                [taskIndex]: {
+                    done: {
+                        $apply: (done) => {
+                            newDoneValue = !done
+                            return newDoneValue;
+                        }//传递参数的写法,将现有值传进去后得到一个新值
+                        // $set: !this.state.cards[cardIndex].tasks.done
+                    }
+                }
+            }
+        }
+    })  
+}
+const todos = (state = initailState, action) => {
+  switch (action.type) {
+    // case 'ADD_T':
+    //   return [
+    //     // ...state,
+    //     todo(undefined, action)
+    //   ]
+    // case 'TOGGLE_TODO':
+    //   return state.map(t =>
+    //     todo(t, action)
+    //   )
+    case SHOW_DETAIL:
+      return showDetail(state, action)
+    default:
+      return state
+  }
+}
+
+export default todos
 // fetch('/cards.json')
 // .then(function(res) {
 //     return res.json();

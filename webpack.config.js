@@ -4,7 +4,7 @@ var webpack = require('webpack');
 
 var config = {
   devtool: 'eval-source-map',
-  entry:  __dirname + "/app/BoardContainer.js",
+  entry:  __dirname + "/app/components/App.js",
   output: {
     path: __dirname + "/public",
     publicPath: '/open/',
@@ -41,15 +41,15 @@ var config = {
 /*
  * If bundling for production, optimize output
  */
-if (process.env.NODE_ENV === 'production') {
-  config.devtool = false;//生产环境中不起用地图查找
-  config.plugins = [
-    new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.optimize.UglifyJsPlugin({comments: false}),//压缩脚本
-    new webpack.DefinePlugin({
-      'process.env': {NODE_ENV: JSON.stringify('production')}
-    })
-  ];
-};
+// if (process.env.NODE_ENV === 'production') {
+//   config.devtool = false;//生产环境中不起用地图查找
+//   config.plugins = [
+//     new webpack.optimize.OccurenceOrderPlugin(),
+//     new webpack.optimize.UglifyJsPlugin({comments: false}),//压缩脚本
+//     new webpack.DefinePlugin({
+//       'process.env': {NODE_ENV: JSON.stringify('production')}
+//     })
+//   ];
+// };
 
 module.exports = config;
